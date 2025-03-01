@@ -1,5 +1,4 @@
 import db from "./Database.js";
-import "../models/UserModel.js";
 import "../models/NoteModel.js";  // Pastikan model ini di-import!
 
 const syncDatabase = async () => {
