@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
+import { BASE_URL } from "../utils";
 
 const AddNote = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ const AddNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/add-notes", formData);
+      await axios.post(`${BASE_URL}/add-notes`, formData);
       navigate("/");
     } catch (error) {
       console.error("Error submitting form:", error);

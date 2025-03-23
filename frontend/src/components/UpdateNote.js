@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
+import { BASE_URL } from "../utils";
 
 const UpdateNote = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const UpdateNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/update-notes/${note.id}`, formData);
+      await axios.put(`http://${BASE_URL}/update-notes/${note.id}`, formData);
       navigate("/"); // Kembali ke halaman utama setelah update sukses
     } catch (error) {
       console.error("Error updating note:", error);

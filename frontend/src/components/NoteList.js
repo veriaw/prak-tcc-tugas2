@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from '../utils';
 
 const NoteList = () => {
     // State untuk menyimpan data catatan
@@ -10,7 +11,7 @@ const NoteList = () => {
   // Fungsi untuk fetch data
   const fetchNotes = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/notes");
+      const response = await axios.get(`http://${BASE_URL}/notes`);
       setNotes(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -29,7 +30,7 @@ const NoteList = () => {
   const handleDelete = async (noteId) => {
     try {
         console.log("Deleting Note ID:", noteId);
-        await axios.delete(`http://localhost:5000/delete-notes/${noteId}`);
+        await axios.delete(`http://${BASE_URL}/delete-notes/${noteId}`);
         fetchNotes();
     } catch (error) {
       console.error("Error submitting form:", error);
