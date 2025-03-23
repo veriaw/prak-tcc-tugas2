@@ -35,7 +35,7 @@ const UpdateNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://${BASE_URL}/update-notes/${note.id}`, formData);
+      await axios.put(`${BASE_URL}/update-notes/${note.id}`, formData);
       navigate("/"); // Kembali ke halaman utama setelah update sukses
     } catch (error) {
       console.error("Error updating note:", error);

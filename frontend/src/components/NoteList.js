@@ -11,7 +11,7 @@ const NoteList = () => {
   // Fungsi untuk fetch data
   const fetchNotes = async () => {
     try {
-      const response = await axios.get(`http://${BASE_URL}/notes`);
+      const response = await axios.get(`${BASE_URL}/notes`);
       setNotes(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -30,7 +30,7 @@ const NoteList = () => {
   const handleDelete = async (noteId) => {
     try {
         console.log("Deleting Note ID:", noteId);
-        await axios.delete(`http://${BASE_URL}/delete-notes/${noteId}`);
+        await axios.delete(`${BASE_URL}/delete-notes/${noteId}`);
         fetchNotes();
     } catch (error) {
       console.error("Error submitting form:", error);
