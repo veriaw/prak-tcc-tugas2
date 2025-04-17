@@ -5,10 +5,10 @@ instance_class: F1
 handlers:
   - url: /
     static_files: dist/index.html
-    upload: dist/index.html
+    upload: build/index.html
 
   - url: /(.*)
     static_files: dist/\1
-    upload: dist/(.*)
+    upload: build/(.*)
 
 default_expiration: "1h"
