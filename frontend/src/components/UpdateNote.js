@@ -2,19 +2,57 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
+import { jwtDecode } from "jwt-decode";
 import { BASE_URL } from "../utils";
 
 const UpdateNote = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const note = location.state?.note || {}; // Menerima data dari navigasi
-
+  const [token, setToken] = useState("");
+  const [expire, setExpire] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     date: "",
     idUser: "1",
   });
+
+  // Membuat instance axios khusus untuk JWT
+  const axiosJWT = axios.create();
+
+  // Interceptor akan dijalankan SETIAP KALI membuat request dengan axiosJWT
+  // Fungsinya buat ngecek + memperbarui access token sebelum request dikirim
+  axiosJWT.interceptors.request.use(
+    async (config) => {
+      // Ambil waktu sekarang, simpan dalam variabel "currentDate"
+      const currentDate = new Date();
+
+      // Bandingkan waktu expire token dengan waktu sekarang
+      if (expire * 1000 < currentDate.getTime()) {
+        // Kalo access token expire, Request token baru ke endpoint /token
+        const response = await axios.get(`${BASE_URL}/token`);
+
+        // Update header Authorization dengan access token baru
+        config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+
+        // Update token di state
+        setToken(response.data.accessToken);
+
+        // Decode token baru untuk mendapatkan informasi user
+        const decoded = jwtDecode(response.data.accessToken);
+        console.log(decoded);
+
+        setExpire(decoded.exp); // <- Set waktu expire baru
+      }
+      return config;
+    },
+    (error) => {
+      // Kalo misal ada error, langsung balik ke halaman login
+      setToken("");
+      navigate("/");
+    }
+  );
 
   // Isi formData dengan data note yang diterima
   useEffect(() => {
@@ -35,7 +73,9 @@ const UpdateNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${BASE_URL}/update-notes/${note.id}`, formData);
+      await axiosJWT.put(`${BASE_URL}/update-notes/${note.id}`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       navigate("/"); // Kembali ke halaman utama setelah update sukses
     } catch (error) {
       console.error("Error updating note:", error);

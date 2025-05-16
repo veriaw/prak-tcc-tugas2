@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bulma/css/bulma.min.css";
+import { jwtDecode } from "jwt-decode";
 import { BASE_URL } from "../utils";
 
 const AddNote = () => {
@@ -11,8 +12,46 @@ const AddNote = () => {
     date: "",
     idUser:"1"
   });
+  const [token, setToken] = useState("");
+  const [expire, setExpire] = useState("");
 
   const navigate = useNavigate();
+
+  // Membuat instance axios khusus untuk JWT
+  const axiosJWT = axios.create();
+
+  // Interceptor akan dijalankan SETIAP KALI membuat request dengan axiosJWT
+  // Fungsinya buat ngecek + memperbarui access token sebelum request dikirim
+  axiosJWT.interceptors.request.use(
+    async (config) => {
+      // Ambil waktu sekarang, simpan dalam variabel "currentDate"
+      const currentDate = new Date();
+
+      // Bandingkan waktu expire token dengan waktu sekarang
+      if (expire * 1000 < currentDate.getTime()) {
+        // Kalo access token expire, Request token baru ke endpoint /token
+        const response = await axios.get(`${BASE_URL}/token`);
+
+        // Update header Authorization dengan access token baru
+        config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+
+        // Update token di state
+        setToken(response.data.accessToken);
+
+        // Decode token baru untuk mendapatkan informasi user
+        const decoded = jwtDecode(response.data.accessToken);
+        console.log(decoded);
+
+        setExpire(decoded.exp); // <- Set waktu expire baru
+      }
+      return config;
+    },
+    (error) => {
+      // Kalo misal ada error, langsung balik ke halaman login
+      setToken("");
+      navigate("/");
+    }
+  );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,7 +60,9 @@ const AddNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${BASE_URL}/add-notes`, formData);
+      await axiosJWT.post(`${BASE_URL}/add-notes`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       navigate("/");
     } catch (error) {
       console.error("Error submitting form:", error);

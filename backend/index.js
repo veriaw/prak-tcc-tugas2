@@ -1,14 +1,32 @@
 import express from "express";
 import cors from "cors";
 import UserRoute from "./routes/Route.js";
-import syncDatabase from "./configs/syncDatabase.js";
+import "./models/RelationModel.js"; 
+import cookieParser from "cookie-parser";
 
 const app = express();
+const port = process.env.PORT || 5000;
 
-app.use(cors());
+// Konfigurasi CORS agar mengizinkan domain frontend terdeploy
+const corsOptions = {
+ origin: [
+    "https://notes-frontend-wijdan-dot-projek-tcc-1.uc.r.appspot.com",
+    "http://localhost:3000", // Tambahkan localhost untuk pengembangan lokal
+  ], // Ganti dengan URL frontend yang terdeploy
+  credentials: true, // Memungkinkan penggunaan cookies
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions)); // Menggunakan opsi CORS
+
+// Menambahkan penanganan preflight request (OPTIONS)
+app.options("*", cors(corsOptions)); // Menanggapi preflight requests
+
 app.use(express.json());
+app.use(cookieParser());
 app.use(UserRoute);
 
-syncDatabase();
-
-app.listen(5000, () => console.log("Server connected"));
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
