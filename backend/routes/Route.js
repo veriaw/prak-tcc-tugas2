@@ -1,6 +1,6 @@
 import express from "express";
 import { getAllNote, addNote, updateNote, deleteNote } from "../controllers/NoteController.js";
-import { Register, Login, refreshToken, logout } from "../controllers/UsersController.js";
+import { Register, Login, logout } from "../controllers/UsersController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import { getAccessToken } from "../controllers/TokenController.js";
 
@@ -11,7 +11,6 @@ router.get("/token", getAccessToken);
 // User Routes
 router.post("/register", Register);
 router.post("/login", Login);
-router.get("/token", refreshToken);
 router.delete("/logout", logout);
 
 //note

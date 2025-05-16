@@ -15,7 +15,9 @@ const LoginForm = () => {
       const response = await axios.post(`${BASE_URL}/login`, {
         username: username,
         password: password,
-      });
+      }, {
+        withCredentials: true   // wajib agar cookie terkirim & diterima
+        });
 
       console.log(response);
 

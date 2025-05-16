@@ -11,11 +11,6 @@ const NoteList = () => {
   const [expire, setExpire] = useState("");
   const navigate = useNavigate();
 
-  // Fetch data pertama kali saat komponen dirender
-  useEffect(() => {
-    fetchNotes();
-  }, []);
-
   // Membuat instance axios khusus untuk JWT
   const axiosJWT = axios.create();
 
@@ -52,14 +47,17 @@ const NoteList = () => {
     }
   );
 
+  // Fetch data pertama kali saat komponen dirender
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
   // Fungsi untuk fetch data
   const fetchNotes = async () => {
     try {
       console.log("Token",token);
       const response = await axiosJWT.get(`${BASE_URL}/notes`, {
         headers: { Authorization: `Bearer ${token}` },
-      }, {
-        withCredentials: true   // wajib agar cookie terkirim & diterima
       });
       setNotes(response.data);
     } catch (error) {
