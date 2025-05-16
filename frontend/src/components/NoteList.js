@@ -12,7 +12,10 @@ const NoteList = () => {
   const navigate = useNavigate();
 
   // Membuat instance axios khusus untuk JWT
-  const axiosJWT = axios.create();
+  const axiosJWT = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true,
+  });
 
   // Interceptor akan dijalankan SETIAP KALI membuat request dengan axiosJWT
   // Fungsinya buat ngecek + memperbarui access token sebelum request dikirim
@@ -20,12 +23,14 @@ const NoteList = () => {
     async (config) => {
       // Ambil waktu sekarang, simpan dalam variabel "currentDate"
       const currentDate = new Date();
-
+      console.log(currentDate);
       // Bandingkan waktu expire token dengan waktu sekarang
       if (expire * 1000 < currentDate.getTime()) {
         // Kalo access token expire, Request token baru ke endpoint /token
-        const response = await axios.get(`${BASE_URL}/token`);
-
+        const response = await axios.get(`${BASE_URL}/token`, {
+          withCredentials: true   // wajib agar cookie terkirim & diterima
+        });
+        console.log("aku di sini");
         // Update header Authorization dengan access token baru
         config.headers.Authorization = `Bearer ${response.data.accessToken}`;
 
@@ -43,6 +48,7 @@ const NoteList = () => {
     (error) => {
       // Kalo misal ada error, langsung balik ke halaman login
       setToken("");
+      console.log("Token Gagal Diambil");
       navigate("/");
     }
   );
@@ -57,8 +63,10 @@ const NoteList = () => {
     try {
       console.log("Token",token);
       const response = await axiosJWT.get(`${BASE_URL}/notes`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+        headers: { Authorization: `Bearer ${token}`},
+      }, {
+        withCredentials: true   // wajib agar cookie terkirim & diterima
+        });
       setNotes(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
