@@ -19,7 +19,10 @@ const UpdateNote = () => {
   });
 
   // Membuat instance axios khusus untuk JWT
-  const axiosJWT = axios.create();
+  const axiosJWT = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true,
+  });
 
   // Interceptor akan dijalankan SETIAP KALI membuat request dengan axiosJWT
   // Fungsinya buat ngecek + memperbarui access token sebelum request dikirim
@@ -31,8 +34,9 @@ const UpdateNote = () => {
       // Bandingkan waktu expire token dengan waktu sekarang
       if (expire * 1000 < currentDate.getTime()) {
         // Kalo access token expire, Request token baru ke endpoint /token
-        const response = await axios.get(`${BASE_URL}/token`);
-
+        const response = await axios.get(`${BASE_URL}/token`, {
+          withCredentials: true   // wajib agar cookie terkirim & diterima
+        });
         // Update header Authorization dengan access token baru
         config.headers.Authorization = `Bearer ${response.data.accessToken}`;
 
@@ -76,7 +80,7 @@ const UpdateNote = () => {
       await axiosJWT.put(`${BASE_URL}/update-notes/${note.id}`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      navigate("/"); // Kembali ke halaman utama setelah update sukses
+      navigate("/notes"); // Kembali ke halaman utama setelah update sukses
     } catch (error) {
       console.error("Error updating note:", error);
     }

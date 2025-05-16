@@ -30,7 +30,7 @@ const NoteList = () => {
         const response = await axios.get(`${BASE_URL}/token`, {
           withCredentials: true   // wajib agar cookie terkirim & diterima
         });
-        console.log("aku di sini");
+        console.log(response);
         // Update header Authorization dengan access token baru
         config.headers.Authorization = `Bearer ${response.data.accessToken}`;
 
@@ -61,12 +61,9 @@ const NoteList = () => {
   // Fungsi untuk fetch data
   const fetchNotes = async () => {
     try {
-      console.log("Token",token);
       const response = await axiosJWT.get(`${BASE_URL}/notes`, {
         headers: { Authorization: `Bearer ${token}`},
-      }, {
-        withCredentials: true   // wajib agar cookie terkirim & diterima
-        });
+      });
       setNotes(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);

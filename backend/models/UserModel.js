@@ -16,7 +16,7 @@ const Users = db.define("User",{
         allowNull: false,
     },
     refresh_token:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
     }
 });
