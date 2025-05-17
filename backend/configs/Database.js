@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const {
-  DB_HOST: host, //34.132.179.173
+  DB_HOST: host, 
   DB_USERNAME: username,
   DB_PASSWORD: password,
   DB_NAME: database,
