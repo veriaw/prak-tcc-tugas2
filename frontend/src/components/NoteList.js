@@ -72,7 +72,9 @@ const NoteList = () => {
 
   const Logout = async () => {
     try {
-      await axios.delete(`${BASE_URL}/logout`);
+      await axios.delete(`${BASE_URL}/logout`, {
+          withCredentials: true   // wajib agar cookie terkirim & diterima
+        });
       navigate("/");
     } catch (error) {
       console.log(error);
