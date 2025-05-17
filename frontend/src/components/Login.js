@@ -12,7 +12,7 @@ const LoginForm = () => {
   const login = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`https://notes-backend-veriaw-928661779459.us-central1.run.app/login`, {
+      const response = await axios.post(`${BASE_URL}/login`, {
         username: username,
         password: password,
       }, {
