@@ -72,9 +72,10 @@ const NoteList = () => {
 
   const Logout = async () => {
     try {
-      await axios.delete(`${BASE_URL}/logout`, {
+      const response = await axios.delete(`${BASE_URL}/logout`, {
           withCredentials: true   // wajib agar cookie terkirim & diterima
         });
+      console.log(response);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -99,11 +100,12 @@ const NoteList = () => {
     
   return (
     <div className="container mt-5">
-      <div className="is-flex is-justify-content-space-between is-align-items-center mb-5">
+      <div className="mb-5" style={{ position: 'relative', textAlign: 'center' }}>
         <h1 className="title">Notes</h1>
         <button
           className="button is-danger"
           onClick={Logout}
+          style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
         >
           Logout
         </button>
