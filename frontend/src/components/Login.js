@@ -43,7 +43,7 @@ const LoginForm = () => {
               </div>
             )}
             <div className="field">
-              <label className="label">Email</label>
+              <label className="label">Username</label>
               <div className="control">
                 <input
                   className="input"

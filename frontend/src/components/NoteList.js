@@ -70,6 +70,15 @@ const NoteList = () => {
     }
   };
 
+  const Logout = async () => {
+    try {
+      await axios.delete(`${BASE_URL}/logout`);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleUpdate = (note) => {
     navigate("/update", { state: { note } });  // Kirim data saat navigasi
   };
@@ -88,7 +97,15 @@ const NoteList = () => {
     
   return (
     <div className="container mt-5">
-      <h1 className="title has-text-centered">Notes</h1>
+      <div className="is-flex is-justify-content-space-between is-align-items-center mb-5">
+        <h1 className="title">Notes</h1>
+        <button
+          className="button is-danger"
+          onClick={Logout}
+        >
+          Logout
+        </button>
+      </div>
       <button className="button is-primary m-5 has-text-white" onClick={()=>{navigate("/add")}}>Add Note</button>
       <div className="columns is-multiline">
         {notes.map((note) => (
