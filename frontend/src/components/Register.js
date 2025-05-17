@@ -20,9 +20,9 @@ const RegisterForm = () => {
 
     try {
       await axios.post(`${BASE_URL}/register`, {
-        username,
-        password,
-        confirmPassword
+        username: username,
+        password: password,
+        confirm_password: confirmPassword
       });
       navigate("/");
     } catch (error) {
