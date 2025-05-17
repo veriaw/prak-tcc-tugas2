@@ -1,1 +1,1 @@
-export const BASE_URL = "https://notes-backend-veriaw-928661779459.us-central1.run.app";
+export const BASE_URL = "tes";
