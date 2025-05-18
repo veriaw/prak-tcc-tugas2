@@ -48,7 +48,6 @@ const NoteList = () => {
     (error) => {
       // Kalo misal ada error, langsung balik ke halaman login
       setToken("");
-      console.log("Token Gagal Diambil");
       navigate("/");
     }
   );
@@ -72,10 +71,9 @@ const NoteList = () => {
 
   const Logout = async () => {
     try {
-      const response = await axios.delete(`${BASE_URL}/logout`, {
+      await axios.delete(`${BASE_URL}/logout`, {
           withCredentials: true   // wajib agar cookie terkirim & diterima
         });
-      console.log(response);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -100,7 +98,7 @@ const NoteList = () => {
     
   return (
     <div className="container mt-5">
-      <div className="mb-5" style={{ position: 'relative', textAlign: 'center' }}>
+      <div className="m-5" style={{ position: 'relative', textAlign: 'center' }}>
         <h1 className="title">Notes</h1>
         <button
           className="button is-danger"

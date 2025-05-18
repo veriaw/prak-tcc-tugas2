@@ -121,7 +121,12 @@ export const logout = async (req, res) => {
     await Users.update({ refresh_token: null }, { where: { id: data.id } });
 
     // Menghapus refresh cookie
-    res.clearCookie("refreshToken"); // Sesuaikan nama cookie
+    res.clearCookie("refreshToken", {
+      httpOnly: false,
+      sameSite: "none",
+      secure: true,
+      path: "/",          // kalau kamu tidak atur path sebelumnya, tambahkan saja
+    }); // Sesuaikan nama cookie
 
     // Response
     return res.status(200).json({
