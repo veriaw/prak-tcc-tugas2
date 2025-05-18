@@ -60,6 +60,7 @@ const NoteList = () => {
   // Fungsi untuk fetch data
   const fetchNotes = async () => {
     try {
+      console.log(token);
       const response = await axiosJWT.get(`${BASE_URL}/notes`, {
         headers: { Authorization: `Bearer ${token}`},
       });
