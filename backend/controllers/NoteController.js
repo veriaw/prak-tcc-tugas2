@@ -18,8 +18,14 @@ async function getAllNote(req, res) {
 // CREATE
 async function addNote(req, res) {
   try {
-    const inputNote = req.body;
-    await Note.create(inputNote);
+    const { title, description, date } = req.body;
+    const idUser = req.user.id;
+    await Note.create({
+      title: title,
+      description: description,
+      date: date,
+      userId: idUser
+    });
     res.status(201).json({ msg: "Note Created" });
   } catch (error) {
     console.log(error.message);

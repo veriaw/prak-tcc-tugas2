@@ -9,8 +9,7 @@ const AddNote = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    date: "",
-    idUser:"1"
+    date: ""
   });
   const [token, setToken] = useState("");
   const [expire, setExpire] = useState("");
@@ -64,11 +63,8 @@ const AddNote = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const decoded = jwtDecode(token);       // decode token sekali saat submit
-    const dataToSend = { ...formData, idUser: decoded.id };  // gabungkan idUser
-
     try {
-      await axiosJWT.post(`${BASE_URL}/add-notes`, dataToSend, {
+      await axiosJWT.post(`${BASE_URL}/add-notes`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/notes");
