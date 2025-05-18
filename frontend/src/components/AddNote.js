@@ -67,6 +67,7 @@ const AddNote = () => {
     const decoded = jwtDecode(token);       // decode token sekali saat submit
     const dataToSend = { ...formData, idUser: decoded.id };  // gabungkan idUser
     console.log(formData.idUser);
+    
     try {
       await axiosJWT.post(`${BASE_URL}/add-notes`, dataToSend, {
         headers: { Authorization: `Bearer ${token}` },
