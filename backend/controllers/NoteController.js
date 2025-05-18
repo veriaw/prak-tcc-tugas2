@@ -6,7 +6,7 @@ async function getAllNote(req, res) {
     const userId = req.user.id;
     const response = await Note.findAll({
       where:{
-        userId: userId
+        idUser: userId
       }
     });
     res.status(200).json(response);
