@@ -3,7 +3,12 @@ import Note from "../models/NoteModel.js";
 // GET
 async function getAllNote(req, res) {
   try {
-    const response = await Note.findAll();
+    const userId = req.user.id;
+    const response = await Note.findAll({
+      where:{
+        userId: userId
+      }
+    });
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
