@@ -24,7 +24,7 @@ async function addNote(req, res) {
       title: title,
       description: description,
       date: date,
-      userId: idUser
+      idUser: idUser
     });
     res.status(201).json({ msg: "Note Created" });
   } catch (error) {
