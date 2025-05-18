@@ -64,6 +64,9 @@ const AddNote = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const decoded = jwtDecode(token);
+    formData.idUser= decoded.id;
+    console.log(decoded.id);
     try {
       await axiosJWT.post(`${BASE_URL}/add-notes`, formData, {
         headers: { Authorization: `Bearer ${token}` },
