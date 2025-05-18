@@ -40,10 +40,10 @@ export const getAccessToken = async (req, res) => {
           }
           // Konversi data user ke bentuk object
           const userPlain = user.toJSON();
-
+          
           // Hapus data sensitif sebelum membuat token baru, dalam hal ini password sama refresh token dihapus
           const { password: _, refresh_token: __, ...safeUserData } = userPlain;
-
+          
           // Buat access token baru (expire selama 30 detik)
           const accessToken = jwt.sign(
             safeUserData,
